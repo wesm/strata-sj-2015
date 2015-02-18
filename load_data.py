@@ -204,7 +204,7 @@ def number_with_comma(x):
         x = x.replace(',', '')
         return float(x)
     except (ValueError, AttributeError):
-        return np.nan
+        return None
 
 
 def empty_as_null(x):
@@ -291,7 +291,6 @@ def to_time(x):
 crimes = pd.read_csv('sf_crimes.csv')
 crimes.Date = pd.to_datetime(crimes.Date, format=CRIME_DATE_FORMAT)
 crimes.Time = crimes.Time.map(to_time)
-
 
 companies = pd.read_csv('companies.csv',
                         parse_dates=['founded_at', 'first_funding_at'])
