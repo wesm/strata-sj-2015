@@ -287,18 +287,18 @@ def to_time(x):
     h, m = x.split(':')
     return time(int(h), int(m))
 
+def cleaning_pandas_some():
+    crimes = pd.read_csv('sf_crimes.csv')
+    crimes.Date = pd.to_datetime(crimes.Date, format=CRIME_DATE_FORMAT)
+    crimes.Time = crimes.Time.map(to_time)
 
-crimes = pd.read_csv('sf_crimes.csv')
-crimes.Date = pd.to_datetime(crimes.Date, format=CRIME_DATE_FORMAT)
-crimes.Time = crimes.Time.map(to_time)
+    companies = pd.read_csv('companies.csv',
+                            parse_dates=['founded_at', 'first_funding_at'])
+    companies['funding_total_usd'] = null_on_error(
+        companies.pop(' funding_total_usd '), number_with_comma)
 
-companies = pd.read_csv('companies.csv',
-                        parse_dates=['founded_at', 'first_funding_at'])
-companies['funding_total_usd'] = null_on_error(
-    companies.pop(' funding_total_usd '), number_with_comma)
+    investments = pd.read_csv('investments.csv')
+    acquisitions = pd.read_csv('acquisitions.csv')
+    rounds = pd.read_csv('rounds.csv')
 
-investments = pd.read_csv('investments.csv')
-
-acquisitions = pd.read_csv('acquisitions.csv')
-
-rounds = pd.read_csv('rounds.csv')
+    return investments, acquisitions, rounds
